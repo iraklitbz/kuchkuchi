@@ -19,35 +19,80 @@
           class="text-sm font-medium text-zinc-600 transition-colors hover:text-brand"
           active-class="text-brand"
         >
-          Home
+          მთავარი
         </NuxtLink>
         <NuxtLink
           to="/shop"
           class="text-sm font-medium text-zinc-600 transition-colors hover:text-brand"
           active-class="text-brand"
         >
-          Shop
+          მაღაზია
         </NuxtLink>
 
-        <!-- Categories dropdown -->
+        <!-- Categories mega dropdown -->
         <div class="group relative">
           <button class="flex items-center gap-1 text-sm font-medium text-zinc-600 transition-colors hover:text-brand">
-            Categories
-            <Icon :icon="ChevronDownIcon" class="text-xs transition-transform group-hover:rotate-180" />
+            კატეგორიები
+            <Icon :icon="ChevronDownIcon" class="text-xs transition-transform duration-200 group-hover:rotate-180" />
           </button>
-          <div class="invisible absolute left-0 top-full z-50 mt-1 min-w-48 rounded-xl border border-zinc-100 bg-white py-1.5 opacity-0 shadow-card transition-all group-hover:visible group-hover:opacity-100">
-            <p class="px-4 py-2 text-xs text-zinc-400">Loading categories...</p>
+
+          <div class="invisible absolute left-0 top-full z-50 mt-2 rounded-2xl border border-zinc-100 bg-white opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:opacity-100">
+            <!-- Loading skeleton -->
+            <div v-if="categoriesPending" class="flex gap-8 p-5">
+              <div v-for="i in 3" :key="i" class="w-28 space-y-2.5">
+                <div class="h-3 w-20 animate-pulse rounded bg-zinc-100" />
+                <div class="h-2.5 w-16 animate-pulse rounded bg-zinc-100" />
+                <div class="h-2.5 w-14 animate-pulse rounded bg-zinc-100" />
+                <div class="h-2.5 w-16 animate-pulse rounded bg-zinc-100" />
+              </div>
+            </div>
+
+            <!-- Real data -->
+            <template v-else-if="categories.length">
+              <div class="flex flex-wrap gap-x-6 gap-y-4 p-5" style="min-width: 240px; max-width: 560px">
+                <div v-for="cat in categories" :key="cat.id" class="min-w-[110px]">
+                  <NuxtLink
+                    :to="`/category/${cat.slug}`"
+                    class="mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-800 transition-colors hover:text-brand"
+                  >
+                    {{ cat.name }}
+                  </NuxtLink>
+                  <template v-if="cat.children?.length">
+                    <NuxtLink
+                      v-for="child in cat.children"
+                      :key="child.id"
+                      :to="`/category/${child.slug}`"
+                      class="block py-0.5 text-sm text-zinc-500 transition-colors hover:text-brand"
+                    >
+                      {{ child.name }}
+                    </NuxtLink>
+                  </template>
+                </div>
+              </div>
+              <div class="border-t border-zinc-100 px-5 py-2.5">
+                <NuxtLink
+                  to="/shop"
+                  class="text-xs font-medium text-brand transition-opacity hover:opacity-70"
+                >
+                  ყველა პროდუქტი →
+                </NuxtLink>
+              </div>
+            </template>
+
+            <template v-else>
+              <p class="px-5 py-4 text-xs text-zinc-400">კატეგორიები არ არის.</p>
+            </template>
           </div>
         </div>
       </nav>
 
       <!-- Actions -->
       <div class="flex items-center gap-1">
-        <!-- Search (future) -->
+        <!-- Search -->
         <div class="relative">
           <button
             class="flex size-9 items-center justify-center rounded-xl text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800"
-            aria-label="Search"
+            aria-label="ძიება"
             @click="toggleSearch"
           >
             <Icon :icon="SearchIcon" />
@@ -59,7 +104,7 @@
               class="absolute right-0 top-full z-50 mt-2 w-[min(92vw,22rem)] rounded-2xl border border-zinc-200 bg-white p-3 shadow-2xl"
             >
               <form @submit.prevent="submitSearch">
-                <label class="sr-only" for="header-search">Search products</label>
+                <label class="sr-only" for="header-search">პროდუქტის ძიება</label>
                 <div class="flex items-center gap-2 rounded-xl border border-zinc-200 px-3 py-2.5 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
                   <Icon :icon="SearchIcon" class="text-zinc-400" />
                   <input
@@ -68,14 +113,14 @@
                     v-model="searchTerm"
                     type="search"
                     autocomplete="off"
-                    placeholder="Search products..."
+                    placeholder="პროდუქტის ძიება..."
                     class="w-full bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400"
                     @keydown.esc.prevent="closeSearch"
                   />
                 </div>
               </form>
               <p class="mt-2 px-1 text-xs text-zinc-400">
-                Search by name, SKU, brand or category.
+                ძიება სახელით, SKU-ით, ბრენდით ან კატეგორიით.
               </p>
             </div>
           </Transition>
@@ -84,7 +129,7 @@
         <!-- Cart -->
         <button
           class="relative flex size-9 items-center justify-center rounded-xl text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800"
-          aria-label="Cart"
+          aria-label="კალათა"
           @click="cartStore.openCart()"
         >
           <Icon :icon="CartIcon" />
@@ -104,7 +149,7 @@
             <NuxtLink
               to="/account"
               class="flex size-9 items-center justify-center rounded-xl bg-brand/10 text-sm font-bold text-brand transition-colors hover:bg-brand/20"
-              :aria-label="`Account: ${authStore.user?.username}`"
+              :aria-label="`ანგარიში: ${authStore.user?.username}`"
             >
               {{ authStore.userInitial }}
             </NuxtLink>
@@ -113,7 +158,7 @@
             <NuxtLink
               to="/login"
               class="flex size-9 items-center justify-center rounded-xl text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800"
-              aria-label="Login"
+              aria-label="შესვლა"
             >
               <Icon :icon="UserIcon" />
             </NuxtLink>
@@ -126,7 +171,7 @@
         <!-- Mobile menu button -->
         <button
           class="flex size-9 items-center justify-center rounded-xl text-zinc-500 transition-colors hover:bg-zinc-100 md:hidden"
-          aria-label="Menu"
+          aria-label="მენიუ"
           @click="mobileOpen = !mobileOpen"
         >
           <Icon v-if="!mobileOpen" :icon="MenuIcon" />
@@ -145,7 +190,7 @@
             active-class="bg-brand/5 text-brand"
             @click="mobileOpen = false"
           >
-            Home
+            მთავარი
           </NuxtLink>
           <NuxtLink
             to="/shop"
@@ -153,24 +198,65 @@
             active-class="bg-brand/5 text-brand"
             @click="mobileOpen = false"
           >
-            Shop
+            მაღაზია
           </NuxtLink>
-          <NuxtLink
-            to="/shop"
-            class="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-brand"
-            active-class="bg-brand/5 text-brand"
-            @click="mobileOpen = false"
-          >
-            Categories
-          </NuxtLink>
+
+          <!-- Mobile Categories expandable -->
+          <div>
+            <button
+              class="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+              @click="mobileCatsOpen = !mobileCatsOpen"
+            >
+              <span>კატეგორიები</span>
+              <Icon
+                :icon="ChevronDownIcon"
+                class="text-xs transition-transform duration-200"
+                :class="mobileCatsOpen ? 'rotate-180' : ''"
+              />
+            </button>
+            <Transition name="slide-down">
+              <div v-if="mobileCatsOpen" class="mt-1 space-y-0.5 pl-2">
+                <p v-if="categoriesPending" class="px-3 py-2 text-xs text-zinc-400">იტვირთება...</p>
+                <template v-else>
+                  <template v-for="cat in categories" :key="cat.id">
+                    <NuxtLink
+                      :to="`/category/${cat.slug}`"
+                      class="block rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-brand"
+                      @click="mobileOpen = false; mobileCatsOpen = false"
+                    >
+                      {{ cat.name }}
+                    </NuxtLink>
+                    <NuxtLink
+                      v-for="child in cat.children"
+                      :key="child.id"
+                      :to="`/category/${child.slug}`"
+                      class="block rounded-lg py-1.5 pl-7 pr-3 text-xs text-zinc-500 transition-colors hover:text-brand"
+                      @click="mobileOpen = false; mobileCatsOpen = false"
+                    >
+                      {{ child.name }}
+                    </NuxtLink>
+                  </template>
+                  <NuxtLink
+                    to="/shop"
+                    class="block rounded-lg px-3 py-2 text-xs font-medium text-brand hover:bg-brand/5"
+                    @click="mobileOpen = false; mobileCatsOpen = false"
+                  >
+                    ყველა პროდუქტი →
+                  </NuxtLink>
+                </template>
+              </div>
+            </Transition>
+          </div>
+
           <div class="my-1 border-t border-zinc-100" />
+
           <template v-if="authStore.isAuthenticated">
             <NuxtLink
               to="/account"
               class="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
               @click="mobileOpen = false"
             >
-              My Account
+              ჩემი ანგარიში
             </NuxtLink>
           </template>
           <template v-else>
@@ -179,14 +265,14 @@
               class="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
               @click="mobileOpen = false"
             >
-              Sign In
+              შესვლა
             </NuxtLink>
             <NuxtLink
               to="/register"
               class="rounded-lg px-3 py-2.5 text-sm font-medium text-brand hover:bg-brand/5"
               @click="mobileOpen = false"
             >
-              Create Account
+              რეგისტრაცია
             </NuxtLink>
           </template>
         </nav>
@@ -196,6 +282,7 @@
 </template>
 
 <script setup lang="ts">
+import type { Category } from '~/types'
 import CartIcon from '~/assets/icons/cart.svg'
 import UserIcon from '~/assets/icons/user.svg'
 import SearchIcon from '~/assets/icons/search.svg'
@@ -205,17 +292,25 @@ import ChevronDownIcon from '~/assets/icons/chevron-down.svg'
 
 const authStore = useAuthStore()
 const cartStore = useCartStore()
+const { getCategories } = useStrapi()
 
 const mobileOpen = ref(false)
+const mobileCatsOpen = ref(false)
 const searchOpen = ref(false)
 const searchTerm = ref('')
 const searchInput = ref<HTMLInputElement | null>(null)
 
-// Close mobile menu on route change
+const { data: categoriesData, pending: categoriesPending } = useLazyAsyncData(
+  'nav-categories',
+  () => getCategories(),
+)
+const categories = computed(() => (categoriesData.value?.data ?? []) as Category[])
+
 const router = useRouter()
 
 router.afterEach(() => {
   mobileOpen.value = false
+  mobileCatsOpen.value = false
   closeSearch()
 })
 
@@ -226,6 +321,7 @@ function openSearch() {
 
 function closeSearch() {
   searchOpen.value = false
+  searchTerm.value = ''
 }
 
 function toggleSearch() {

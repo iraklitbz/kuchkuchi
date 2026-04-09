@@ -7,5 +7,7 @@
     <AppFooter />
     <!-- Cart drawer (global, always mounted) -->
     <CartDrawer />
+    <!-- Quick view modal (global) -->
+    <ProductQuickView />
   </div>
 </template>

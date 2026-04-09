@@ -14,7 +14,7 @@
             <span class="font-display text-xl font-bold text-zinc-900">Kuchkucha</span>
           </div>
           <p class="mt-3 max-w-xs text-sm leading-relaxed text-zinc-500">
-            Quality Georgian products delivered to your door.
+            ხარისხიანი ქართული პროდუქტები — თქვენს კართან.
           </p>
           <div class="mt-4 flex items-center gap-3">
             <a
@@ -40,13 +40,10 @@
 
         <!-- Shop links -->
         <div>
-          <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Shop</h3>
+          <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">მაღაზია</h3>
           <ul class="space-y-2.5">
             <li v-for="link in shopLinks" :key="link.to">
-              <NuxtLink
-                :to="link.to"
-                class="text-sm text-zinc-500 transition-colors hover:text-brand"
-              >
+              <NuxtLink :to="link.to" class="text-sm text-zinc-500 transition-colors hover:text-brand">
                 {{ link.label }}
               </NuxtLink>
             </li>
@@ -55,13 +52,10 @@
 
         <!-- Account links -->
         <div>
-          <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">Account</h3>
+          <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-400">ანგარიში</h3>
           <ul class="space-y-2.5">
             <li v-for="link in accountLinks" :key="link.to">
-              <NuxtLink
-                :to="link.to"
-                class="text-sm text-zinc-500 transition-colors hover:text-brand"
-              >
+              <NuxtLink :to="link.to" class="text-sm text-zinc-500 transition-colors hover:text-brand">
                 {{ link.label }}
               </NuxtLink>
             </li>
@@ -72,14 +66,14 @@
       <!-- Bottom bar -->
       <div class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-8 sm:flex-row">
         <p class="text-xs text-zinc-400">
-          &copy; {{ new Date().getFullYear() }} Kuchkucha. All rights reserved.
+          &copy; {{ new Date().getFullYear() }} Kuchkucha. ყველა უფლება დაცულია.
         </p>
         <div class="flex items-center gap-4">
           <NuxtLink to="/privacy-policy" class="text-xs text-zinc-400 transition-colors hover:text-brand">
-            Privacy Policy
+            კონფიდენციალურობის პოლიტიკა
           </NuxtLink>
           <NuxtLink to="/terms-of-service" class="text-xs text-zinc-400 transition-colors hover:text-brand">
-            Terms of Service
+            გამოყენების პირობები
           </NuxtLink>
         </div>
       </div>
@@ -92,16 +86,16 @@ import InstagramIcon from '~/assets/icons/instagram.svg'
 import FacebookIcon from '~/assets/icons/facebook.svg'
 
 const shopLinks = [
-  { label: 'All Products', to: '/shop' },
-  { label: 'New Arrivals', to: '/shop?sort=new' },
-  { label: 'Featured', to: '/shop?featured=true' },
-  { label: 'Categories', to: '/shop' },
+  { label: 'ყველა პროდუქტი', to: '/shop' },
+  { label: 'სიახლეები', to: '/shop?sort=new' },
+  { label: 'გამორჩეული', to: '/shop?featured=true' },
+  { label: 'კატეგორიები', to: '/shop' },
 ]
 
 const accountLinks = [
-  { label: 'My Account', to: '/account' },
-  { label: 'My Orders', to: '/account/orders' },
-  { label: 'Sign In', to: '/login' },
-  { label: 'Register', to: '/register' },
+  { label: 'ჩემი ანგარიში', to: '/account' },
+  { label: 'ჩემი შეკვეთები', to: '/account/orders' },
+  { label: 'შესვლა', to: '/login' },
+  { label: 'რეგისტრაცია', to: '/register' },
 ]
 </script>

@@ -2,7 +2,6 @@
   <div class="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-20">
     <div class="w-full max-w-md">
 
-      <!-- Header -->
       <div class="mb-8 text-center">
         <NuxtLink to="/" class="mb-6 inline-flex items-center justify-center">
           <img
@@ -11,8 +10,8 @@
             class="mx-auto size-40 rounded-full object-cover"
           />
         </NuxtLink>
-        <h1 class="font-display text-2xl font-bold text-zinc-900">Create an account</h1>
-        <p class="mt-2 text-sm text-zinc-500">Join us and start shopping</p>
+        <h1 class="font-display text-2xl font-bold text-zinc-900">ანგარიშის შექმნა</h1>
+        <p class="mt-2 text-sm text-zinc-500">შემოგვიერთდით და დაიწყეთ შოპინგი</p>
       </div>
 
       <!-- Success state -->
@@ -22,10 +21,10 @@
             <path d="M20 6L9 17l-5-5"/>
           </svg>
         </div>
-        <h2 class="font-semibold text-zinc-900">Check your inbox!</h2>
-        <p class="mt-1 text-sm text-zinc-500">We sent a confirmation email. Please verify your address to continue.</p>
+        <h2 class="font-semibold text-zinc-900">შეამოწმეთ ელ-ფოსტა!</h2>
+        <p class="mt-1 text-sm text-zinc-500">გამოგიგზავნეთ დადასტურების ბმული. გთხოვთ, დაადასტუროთ მისამართი.</p>
         <NuxtLink to="/login" class="mt-4 inline-block text-sm font-medium text-brand hover:underline">
-          Go to Sign In
+          შესვლაზე გადასვლა
         </NuxtLink>
       </div>
 
@@ -36,19 +35,19 @@
         </div>
 
         <div>
-          <label class="mb-1.5 block text-sm font-medium text-zinc-700">Username</label>
+          <label class="mb-1.5 block text-sm font-medium text-zinc-700">სახელი</label>
           <input
             v-model="form.username"
             type="text"
             required
             autocomplete="username"
             class="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-brand focus:ring-2 focus:ring-brand/10"
-            placeholder="Your name"
+            placeholder="თქვენი სახელი"
           />
         </div>
 
         <div>
-          <label class="mb-1.5 block text-sm font-medium text-zinc-700">Email</label>
+          <label class="mb-1.5 block text-sm font-medium text-zinc-700">ელ-ფოსტა</label>
           <input
             v-model="form.email"
             type="email"
@@ -60,14 +59,14 @@
         </div>
 
         <div>
-          <label class="mb-1.5 block text-sm font-medium text-zinc-700">Password</label>
+          <label class="mb-1.5 block text-sm font-medium text-zinc-700">პაროლი</label>
           <input
             v-model="form.password"
             type="password"
             required
             autocomplete="new-password"
             class="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-brand focus:ring-2 focus:ring-brand/10"
-            placeholder="Min. 8 characters"
+            placeholder="მინ. 8 სიმბოლო"
           />
           <ul v-if="form.password.length > 0" class="mt-2 space-y-1">
             <li
@@ -86,14 +85,14 @@
         </div>
 
         <div>
-          <label class="mb-1.5 block text-sm font-medium text-zinc-700">Confirm Password</label>
+          <label class="mb-1.5 block text-sm font-medium text-zinc-700">პაროლის დადასტურება</label>
           <input
             v-model="form.confirmPassword"
             type="password"
             required
             autocomplete="new-password"
             class="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-brand focus:ring-2 focus:ring-brand/10"
-            placeholder="Repeat your password"
+            placeholder="გაიმეორეთ პაროლი"
           />
         </div>
 
@@ -106,18 +105,17 @@
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
           </svg>
-          Create Account
+          ანგარიშის შექმნა
         </button>
       </form>
 
-      <!-- Divider + Google -->
       <template v-if="!success">
         <div class="relative my-5">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-zinc-200" />
           </div>
           <div class="relative flex justify-center">
-            <span class="bg-white px-3 text-xs text-zinc-400">or continue with</span>
+            <span class="bg-white px-3 text-xs text-zinc-400">ან გააგრძელეთ</span>
           </div>
         </div>
 
@@ -132,12 +130,12 @@
             <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
           </svg>
-          Continue with Google
+          Google-ით გაგრძელება
         </button>
 
         <p class="mt-6 text-center text-sm text-zinc-500">
-          Already have an account?
-          <NuxtLink to="/login" class="font-medium text-brand hover:underline">Sign in</NuxtLink>
+          უკვე გაქვთ ანგარიში?
+          <NuxtLink to="/login" class="font-medium text-brand hover:underline">შესვლა</NuxtLink>
         </p>
       </template>
     </div>
@@ -159,20 +157,20 @@ const error = ref('')
 const success = ref(false)
 
 const passwordRules = computed(() => [
-  { label: 'At least 8 characters', valid: form.password.length >= 8 },
-  { label: 'At least one uppercase letter', valid: /[A-Z]/.test(form.password) },
-  { label: 'At least one special character', valid: /[^A-Za-z0-9]/.test(form.password) },
+  { label: 'მინიმუმ 8 სიმბოლო', valid: form.password.length >= 8 },
+  { label: 'მინიმუმ ერთი დიდი ასო', valid: /[A-Z]/.test(form.password) },
+  { label: 'მინიმუმ ერთი სპეციალური სიმბოლო', valid: /[^A-Za-z0-9]/.test(form.password) },
 ])
 
 const passwordValid = computed(() => passwordRules.value.every(r => r.valid))
 
 async function handleRegister() {
   if (!passwordValid.value) {
-    error.value = 'Password does not meet the requirements.'
+    error.value = 'პაროლი არ აკმაყოფილებს მოთხოვნებს.'
     return
   }
   if (form.password !== form.confirmPassword) {
-    error.value = 'Passwords do not match.'
+    error.value = 'პაროლები არ ემთხვევა.'
     return
   }
   loading.value = true
@@ -183,7 +181,7 @@ async function handleRegister() {
   }
   catch (err: unknown) {
     const e = err as { data?: { error?: { message?: string } } }
-    error.value = e?.data?.error?.message ?? 'An error occurred. Please try again.'
+    error.value = e?.data?.error?.message ?? 'შეცდომა მოხდა. გთხოვთ, სცადოთ ისევ.'
   }
   finally {
     loading.value = false

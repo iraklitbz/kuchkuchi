@@ -117,6 +117,7 @@ export interface Product {
   categories?: Category[]
   specifications?: Specification[]
   ingredients?: IngredientLine[]
+  relatedProducts?: Product[]
   createdAt: string
   updatedAt: string
 }

@@ -17,7 +17,7 @@
       <!-- Header -->
       <div class="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
         <h2 class="font-display text-lg font-bold text-zinc-900">
-          Cart
+          კალათა
           <ClientOnly>
             <span v-if="cartStore.count > 0" class="ml-1.5 text-sm font-normal text-zinc-400">
               ({{ cartStore.count }})
@@ -39,13 +39,13 @@
           <div class="mb-4 flex size-16 items-center justify-center rounded-full bg-zinc-100">
             <Icon :icon="CartIcon" class="text-2xl text-zinc-300" />
           </div>
-          <p class="font-semibold text-zinc-800">Your cart is empty</p>
-          <p class="mt-1 text-sm text-zinc-500">Add some products to get started</p>
+          <p class="font-semibold text-zinc-800">კალათა ცარიელია</p>
+          <p class="mt-1 text-sm text-zinc-500">დაამატეთ პროდუქტები შესაძენად</p>
           <button
             class="mt-5 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
             @click="cartStore.closeCart()"
           >
-            Continue Shopping
+            შოპინგის გაგრძელება
           </button>
         </div>
 
@@ -104,16 +104,16 @@
       <!-- Footer -->
       <div v-if="!cartStore.isEmpty" class="border-t border-zinc-100 px-5 py-4">
         <div class="mb-4 flex items-center justify-between">
-          <span class="text-sm text-zinc-500">Subtotal</span>
+          <span class="text-sm text-zinc-500">ჯამი</span>
           <span class="text-base font-bold text-zinc-900">{{ formatPrice(cartStore.subtotal) }}</span>
         </div>
-        <p class="mb-4 text-xs text-zinc-400">Shipping calculated at checkout</p>
+        <p class="mb-4 text-xs text-zinc-400">მიტანის ღირებულება გადახდისას</p>
         <NuxtLink
           to="/checkout"
           class="flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           @click="cartStore.closeCart()"
         >
-          Proceed to Checkout
+          გადახდაზე გადასვლა
           <Icon :icon="ArrowRightIcon" />
         </NuxtLink>
         <NuxtLink
@@ -121,7 +121,7 @@
           class="mt-2 flex w-full items-center justify-center rounded-xl border border-zinc-200 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
           @click="cartStore.closeCart()"
         >
-          View Cart
+          კალათის ნახვა
         </NuxtLink>
       </div>
     </div>

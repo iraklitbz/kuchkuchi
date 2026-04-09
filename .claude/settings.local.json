@@ -15,7 +15,8 @@
       "Bash(npm run:*)",
       "Bash(./node_modules/.bin/nuxi typecheck:*)",
       "Bash(./node_modules/.bin/vue-tsc --noEmit)",
-      "Bash(xargs cat:*)"
+      "Bash(xargs cat:*)",
+      "Bash(node:*)"
     ]
   }
 }
