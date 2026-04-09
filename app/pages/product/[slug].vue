@@ -221,7 +221,5 @@ function handleAddToCart() {
   setTimeout(() => { added.value = false }, 2000)
 }
 
-function formatPrice(amount: number): string {
-  return new Intl.NumberFormat('ka-GE', { style: 'currency', currency: 'GEL', minimumFractionDigits: 2 }).format(amount)
-}
+const formatPrice = usePriceFormatter()
 </script>
