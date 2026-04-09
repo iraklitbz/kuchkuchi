@@ -5,10 +5,10 @@
 
         <div class="mb-8 flex items-center gap-3">
           <NuxtLink to="/account" class="text-sm text-zinc-500 hover:text-brand">
-            My Account
+            ჩემი ანგარიში
           </NuxtLink>
           <span class="text-zinc-300">/</span>
-          <h1 class="font-display text-2xl font-bold text-zinc-900">My Orders</h1>
+          <h1 class="font-display text-2xl font-bold text-zinc-900">ჩემი შეკვეთები</h1>
         </div>
 
         <!-- Loading -->
@@ -18,7 +18,7 @@
 
         <!-- Error -->
         <div v-else-if="error" class="rounded-xl border border-red-100 bg-red-50 px-5 py-4 text-sm text-red-600">
-          Failed to load orders. Please refresh.
+          შეკვეთების ჩატვირთვა ვერ მოხერხდა. განაახლეთ გვერდი.
         </div>
 
         <!-- Empty -->
@@ -26,13 +26,13 @@
           <div class="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-zinc-100">
             <Icon :icon="PackageIcon" class="text-xl text-zinc-400" />
           </div>
-          <h2 class="font-semibold text-zinc-900">No orders yet</h2>
-          <p class="mt-1 text-sm text-zinc-500">Your orders will appear here once you make a purchase.</p>
+          <h2 class="font-semibold text-zinc-900">შეკვეთები ჯერ არ არის</h2>
+          <p class="mt-1 text-sm text-zinc-500">შეკვეთები გამოჩნდება პირველი შეძენის შემდეგ.</p>
           <NuxtLink
             to="/shop"
             class="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
-            Start shopping
+            შოპინგის დაწყება
           </NuxtLink>
         </div>
 
@@ -45,11 +45,11 @@
           >
             <div class="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
               <div>
-                <p class="text-xs font-medium text-zinc-400">Order</p>
+                <p class="text-xs font-medium text-zinc-400">შეკვეთა</p>
                 <p class="font-display font-semibold text-zinc-900">{{ order.orderNumber }}</p>
               </div>
               <div class="text-right">
-                <p class="text-xs font-medium text-zinc-400">Date</p>
+                <p class="text-xs font-medium text-zinc-400">თარიღი</p>
                 <p class="text-sm text-zinc-600">{{ formatDate(order.createdAt) }}</p>
               </div>
               <span
@@ -61,8 +61,7 @@
             </div>
 
             <div class="px-5 py-4">
-              <!-- Items preview -->
-              <p class="text-xs font-medium text-zinc-400">Items</p>
+              <p class="text-xs font-medium text-zinc-400">პროდუქტები</p>
               <ul class="mt-1.5 space-y-0.5">
                 <li
                   v-for="(item, idx) in order.items.slice(0, 3)"
@@ -73,7 +72,7 @@
                   <span class="text-zinc-500">{{ formatPrice(item.price * item.quantity) }}</span>
                 </li>
                 <li v-if="order.items.length > 3" class="text-xs text-zinc-400">
-                  + {{ order.items.length - 3 }} more item(s)
+                  + {{ order.items.length - 3 }} პროდუქტი
                 </li>
               </ul>
             </div>
@@ -98,7 +97,7 @@ import type { Order, OrderStatus } from '~/types'
 
 definePageMeta({ layout: 'default', middleware: 'auth' })
 
-useSeoMeta({ title: 'My Orders — Kuchkucha' })
+useSeoMeta({ title: 'ჩემი შეკვეთები — Kuchkucha' })
 
 const authStore = useAuthStore()
 const formatPrice = usePriceFormatter()
@@ -118,17 +117,17 @@ const { data: ordersData, pending, error } = await useAsyncData('my-orders', () 
 const orders = computed(() => ordersData.value?.data ?? [])
 
 function formatDate(dateStr: string): string {
-  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(dateStr))
+  return new Intl.DateTimeFormat('ka-GE', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(dateStr))
 }
 
 function statusLabel(status: OrderStatus): string {
   const labels: Record<OrderStatus, string> = {
-    pending: 'Pending',
-    confirmed: 'Confirmed',
-    processing: 'Processing',
-    shipped: 'Shipped',
-    delivered: 'Delivered',
-    cancelled: 'Cancelled',
+    pending: 'მოლოდინში',
+    confirmed: 'დადასტურებული',
+    processing: 'მუშავდება',
+    shipped: 'გაგზავნილი',
+    delivered: 'მიტანილი',
+    cancelled: 'გაუქმებული',
   }
   return labels[status] ?? status
 }

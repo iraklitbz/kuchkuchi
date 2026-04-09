@@ -34,7 +34,20 @@
         v-if="product.stock <= 0"
         class="absolute inset-0 flex items-center justify-center bg-white/70"
       >
-        <span class="rounded-lg bg-zinc-800 px-3 py-1 text-xs font-semibold text-white">Out of stock</span>
+        <span class="rounded-lg bg-zinc-800 px-3 py-1 text-xs font-semibold text-white">ამოიწურა</span>
+      </div>
+
+      <!-- Quick view button (hover) -->
+      <div
+        v-if="product.stock > 0"
+        class="absolute bottom-0 left-0 right-0 translate-y-full transition-transform duration-200 group-hover:translate-y-0"
+      >
+        <button
+          class="w-full bg-zinc-900/85 py-2 text-xs font-medium text-white backdrop-blur-sm hover:bg-zinc-900"
+          @click.prevent="quickView.open(product)"
+        >
+          სწრაფი ნახვა
+        </button>
       </div>
     </div>
 
@@ -70,7 +83,7 @@
         @click.prevent="handleAddToCart"
       >
         <Icon :icon="CartIcon" class="text-sm" />
-        Add to Cart
+        კალათაში დამატება
       </button>
     </div>
   </NuxtLink>
@@ -80,11 +93,10 @@
 import CartIcon from '~/assets/icons/cart.svg'
 import type { Product } from '~/types'
 
-const props = defineProps<{
-  product: Product
-}>()
+const props = defineProps<{ product: Product }>()
 
 const cartStore = useCartStore()
+const quickView = useQuickView()
 
 const discount = computed(() => {
   if (!props.product.discountPrice || props.product.discountPrice >= props.product.price) return null

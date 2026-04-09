@@ -41,6 +41,6 @@ withDefaults(defineProps<{
 }>(), {
   loading: false,
   skeletonCount: 8,
-  emptyMessage: 'No products found.',
+  emptyMessage: 'პროდუქტი ვერ მოიძებნა.',
 })
 </script>
