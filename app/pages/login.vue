@@ -5,7 +5,11 @@
       <!-- Header -->
       <div class="mb-8 text-center">
         <NuxtLink to="/" class="mb-6 inline-flex items-center justify-center">
-          <img src="https://res.cloudinary.com/dketlufwl/image/upload/v1775286358/kutch_kutchi_logo_60cm_b96b40d732.jpg" alt="Kuchkucha" class="size-14 rounded-full object-cover mx-auto" />
+          <img
+            src="https://res.cloudinary.com/dketlufwl/image/upload/v1775286358/kutch_kutchi_logo_60cm_b96b40d732.jpg"
+            alt="Kuchkucha"
+            class="mx-auto size-40 rounded-full object-cover"
+          />
         </NuxtLink>
         <h1 class="font-display text-2xl font-bold text-zinc-900">Welcome back</h1>
         <p class="mt-2 text-sm text-zinc-500">Sign in to your account</p>

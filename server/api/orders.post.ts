@@ -29,8 +29,11 @@ export default defineEventHandler(async (event): Promise<unknown> => {
   const orderNumber = `KK-${Date.now()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
 
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${config.strapiToken}`,
     'Content-Type': 'application/json',
+  }
+
+  if (config.strapiToken) {
+    headers.Authorization = `Bearer ${config.strapiToken}`
   }
 
   // If user is authenticated, include their JWT for relation linking on Strapi side

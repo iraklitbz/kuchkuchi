@@ -5,7 +5,7 @@ export default defineEventHandler(async (event): Promise<unknown> => {
   const strapiPath = pathParam + rawSearch
 
   const incomingAuth = getHeader(event, 'authorization')
-  const auth = incomingAuth ?? `Bearer ${config.strapiToken}`
+  const auth = incomingAuth || (config.strapiToken ? `Bearer ${config.strapiToken}` : null)
   const isAuthenticatedRequest = Boolean(incomingAuth)
 
   setHeader(event, 'Vary', 'Authorization')
@@ -20,6 +20,6 @@ export default defineEventHandler(async (event): Promise<unknown> => {
   }
 
   return $fetch(`${config.public.strapiUrl}/api/${strapiPath}`, {
-    headers: { Authorization: auth },
+    headers: auth ? { Authorization: auth } : {},
   })
 })

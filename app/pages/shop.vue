@@ -6,10 +6,13 @@
       <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 class="font-display text-3xl font-bold text-zinc-900">
-            {{ activeCategory ? activeCategory.name : 'All Products' }}
+            {{ searchQuery ? `Search results for “${searchQuery}”` : (activeCategory ? activeCategory.name : 'All Products') }}
           </h1>
           <p v-if="meta?.pagination?.total" class="mt-1 text-sm text-zinc-500">
             {{ meta.pagination.total }} products
+          </p>
+          <p v-else-if="searchQuery" class="mt-1 text-sm text-zinc-500">
+            Searching in titles, SKUs, brands and categories.
           </p>
         </div>
 
@@ -111,9 +114,13 @@ const { getProducts, getProductsByCategory, getCategories } = useStrapi()
 const page = ref(1)
 const sortBy = ref('sortOrder:asc')
 const featuredOnly = ref(false)
+const searchQuery = computed(() => {
+  const q = route.query.q
+  return typeof q === 'string' ? q.trim() : ''
+})
 
 // Reset page when filters change
-watch([() => route.query.category, sortBy, featuredOnly], () => { page.value = 1 })
+watch([() => route.query.category, sortBy, featuredOnly, searchQuery], () => { page.value = 1 })
 
 // Load categories for sidebar
 const { data: categoriesData } = await useAsyncData('shop-categories', () => getCategories())
@@ -128,9 +135,9 @@ const { data, pending, refresh } = await useAsyncData(
   async () => {
     const categorySlug = route.query.category as string | undefined
     if (categorySlug) {
-      return getProductsByCategory(categorySlug, { page: page.value })
+      return getProductsByCategory(categorySlug, { page: page.value, query: searchQuery.value })
     }
-    return getProducts({ page: page.value, pageSize: 24 })
+    return getProducts({ page: page.value, pageSize: 24, query: searchQuery.value })
   },
   { watch: [page, sortBy, featuredOnly, () => route.query.category] },
 )

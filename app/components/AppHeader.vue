@@ -9,7 +9,7 @@
           alt="Kuchkucha"
           class="size-11 rounded-full object-cover ring-2 ring-brand/20"
         />
-        <span class="font-display text-lg font-bold text-zinc-900">Kuchkucha</span>
+        <span class="font-display text-lg font-bold text-zinc-900">Kuchkuchi</span>
       </NuxtLink>
 
       <!-- Desktop Nav -->
@@ -44,12 +44,42 @@
       <!-- Actions -->
       <div class="flex items-center gap-1">
         <!-- Search (future) -->
-        <button
-          class="flex size-9 items-center justify-center rounded-xl text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800"
-          aria-label="Search"
-        >
-          <Icon :icon="SearchIcon" />
-        </button>
+        <div class="relative">
+          <button
+            class="flex size-9 items-center justify-center rounded-xl text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800"
+            aria-label="Search"
+            @click="toggleSearch"
+          >
+            <Icon :icon="SearchIcon" />
+          </button>
+
+          <Transition name="fade-scale">
+            <div
+              v-if="searchOpen"
+              class="absolute right-0 top-full z-50 mt-2 w-[min(92vw,22rem)] rounded-2xl border border-zinc-200 bg-white p-3 shadow-2xl"
+            >
+              <form @submit.prevent="submitSearch">
+                <label class="sr-only" for="header-search">Search products</label>
+                <div class="flex items-center gap-2 rounded-xl border border-zinc-200 px-3 py-2.5 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
+                  <Icon :icon="SearchIcon" class="text-zinc-400" />
+                  <input
+                    id="header-search"
+                    ref="searchInput"
+                    v-model="searchTerm"
+                    type="search"
+                    autocomplete="off"
+                    placeholder="Search products..."
+                    class="w-full bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400"
+                    @keydown.esc.prevent="closeSearch"
+                  />
+                </div>
+              </form>
+              <p class="mt-2 px-1 text-xs text-zinc-400">
+                Search by name, SKU, brand or category.
+              </p>
+            </div>
+          </Transition>
+        </div>
 
         <!-- Cart -->
         <button
@@ -177,10 +207,40 @@ const authStore = useAuthStore()
 const cartStore = useCartStore()
 
 const mobileOpen = ref(false)
+const searchOpen = ref(false)
+const searchTerm = ref('')
+const searchInput = ref<HTMLInputElement | null>(null)
 
 // Close mobile menu on route change
 const router = useRouter()
-router.afterEach(() => { mobileOpen.value = false })
+
+router.afterEach(() => {
+  mobileOpen.value = false
+  closeSearch()
+})
+
+function openSearch() {
+  searchOpen.value = true
+  nextTick(() => searchInput.value?.focus())
+}
+
+function closeSearch() {
+  searchOpen.value = false
+}
+
+function toggleSearch() {
+  if (searchOpen.value) {
+    closeSearch()
+    return
+  }
+  openSearch()
+}
+
+async function submitSearch() {
+  const term = searchTerm.value.trim()
+  closeSearch()
+  await router.push(term ? { path: '/shop', query: { q: term } } : '/shop')
+}
 </script>
 
 <style scoped>
@@ -192,5 +252,15 @@ router.afterEach(() => { mobileOpen.value = false })
 .slide-down-leave-to {
   opacity: 0;
   transform: translateY(-8px);
+}
+
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
 }
 </style>
