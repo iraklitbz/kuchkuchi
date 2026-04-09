@@ -101,6 +101,7 @@ definePageMeta({ layout: 'default', middleware: 'auth' })
 useSeoMeta({ title: 'My Orders — Kuchkucha' })
 
 const authStore = useAuthStore()
+const formatPrice = usePriceFormatter()
 
 const { data: ordersData, pending, error } = await useAsyncData('my-orders', () => {
   const token = authStore.getToken()
@@ -115,14 +116,6 @@ const { data: ordersData, pending, error } = await useAsyncData('my-orders', () 
 })
 
 const orders = computed(() => ordersData.value?.data ?? [])
-
-function formatPrice(amount: number): string {
-  return new Intl.NumberFormat('ka-GE', {
-    style: 'currency',
-    currency: 'GEL',
-    minimumFractionDigits: 2,
-  }).format(amount)
-}
 
 function formatDate(dateStr: string): string {
   return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(dateStr))

@@ -4,7 +4,9 @@
 
       <h1 class="font-display mb-8 text-2xl font-bold text-zinc-900">
         Your Cart
-        <span v-if="cartStore.count" class="ml-2 text-lg font-normal text-zinc-400">({{ cartStore.count }})</span>
+        <ClientOnly>
+          <span v-if="cartStore.count" class="ml-2 text-lg font-normal text-zinc-400">({{ cartStore.count }})</span>
+        </ClientOnly>
       </h1>
 
       <!-- Empty -->
@@ -212,17 +214,10 @@ useSeoMeta({ title: 'Cart — Kuchkucha' })
 
 const cartStore = useCartStore()
 const couponInput = ref('')
+const formatPrice = usePriceFormatter()
 
 async function submitCoupon() {
   await cartStore.applyCoupon(couponInput.value)
   if (cartStore.appliedCoupon) couponInput.value = ''
-}
-
-function formatPrice(amount: number): string {
-  return new Intl.NumberFormat('ka-GE', {
-    style: 'currency',
-    currency: 'GEL',
-    minimumFractionDigits: 2,
-  }).format(amount)
 }
 </script>

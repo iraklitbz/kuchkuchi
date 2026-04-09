@@ -210,6 +210,7 @@ const router = useRouter()
 
 const loading = ref(false)
 const error = ref('')
+const formatPrice = usePriceFormatter()
 
 const form = reactive({
   firstName: '',
@@ -282,13 +283,6 @@ async function submitOrder() {
   }
 }
 
-function formatPrice(amount: number): string {
-  return new Intl.NumberFormat('ka-GE', {
-    style: 'currency',
-    currency: 'GEL',
-    minimumFractionDigits: 2,
-  }).format(amount)
-}
 </script>
 
 <style scoped>

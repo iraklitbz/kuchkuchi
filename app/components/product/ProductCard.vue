@@ -90,14 +90,7 @@ const discount = computed(() => {
   if (!props.product.discountPrice || props.product.discountPrice >= props.product.price) return null
   return Math.round((1 - props.product.discountPrice / props.product.price) * 100)
 })
-
-function formatPrice(amount: number): string {
-  return new Intl.NumberFormat('ka-GE', {
-    style: 'currency',
-    currency: 'GEL',
-    minimumFractionDigits: 2,
-  }).format(amount)
-}
+const formatPrice = usePriceFormatter()
 
 function handleAddToCart() {
   cartStore.addItem(props.product, 1)

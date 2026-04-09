@@ -18,9 +18,11 @@
       <div class="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
         <h2 class="font-display text-lg font-bold text-zinc-900">
           Cart
-          <span v-if="cartStore.count > 0" class="ml-1.5 text-sm font-normal text-zinc-400">
-            ({{ cartStore.count }})
-          </span>
+          <ClientOnly>
+            <span v-if="cartStore.count > 0" class="ml-1.5 text-sm font-normal text-zinc-400">
+              ({{ cartStore.count }})
+            </span>
+          </ClientOnly>
         </h2>
         <button
           class="flex size-8 items-center justify-center rounded-xl text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700"
@@ -135,14 +137,7 @@ import TrashIcon from '~/assets/icons/trash.svg'
 import ArrowRightIcon from '~/assets/icons/arrow-right.svg'
 
 const cartStore = useCartStore()
-
-function formatPrice(amount: number): string {
-  return new Intl.NumberFormat('ka-GE', {
-    style: 'currency',
-    currency: 'GEL',
-    minimumFractionDigits: 2,
-  }).format(amount)
-}
+const formatPrice = usePriceFormatter()
 </script>
 
 <style scoped>

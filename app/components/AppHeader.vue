@@ -58,12 +58,14 @@
           @click="cartStore.openCart()"
         >
           <Icon :icon="CartIcon" />
-          <span
-            v-if="cartStore.count > 0"
-            class="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-brand text-[10px] font-bold text-white"
-          >
-            {{ cartStore.count > 99 ? '99+' : cartStore.count }}
-          </span>
+          <ClientOnly>
+            <span
+              v-if="cartStore.count > 0"
+              class="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-brand text-[10px] font-bold text-white"
+            >
+              {{ cartStore.count > 99 ? '99+' : cartStore.count }}
+            </span>
+          </ClientOnly>
         </button>
 
         <!-- Account -->
