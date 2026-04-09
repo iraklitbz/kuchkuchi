@@ -75,8 +75,12 @@
           &copy; {{ new Date().getFullYear() }} Kuchkucha. All rights reserved.
         </p>
         <div class="flex items-center gap-4">
-          <span class="text-xs text-zinc-400">Privacy Policy</span>
-          <span class="text-xs text-zinc-400">Terms of Service</span>
+          <NuxtLink to="/privacy-policy" class="text-xs text-zinc-400 transition-colors hover:text-brand">
+            Privacy Policy
+          </NuxtLink>
+          <NuxtLink to="/terms-of-service" class="text-xs text-zinc-400 transition-colors hover:text-brand">
+            Terms of Service
+          </NuxtLink>
         </div>
       </div>
     </div>

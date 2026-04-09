@@ -3,16 +3,36 @@ import type { StrapiResponse, Product, Category, Brand } from '~/types'
 export function useStrapi() {
   const authStore = useAuthStore()
 
-  function authHeaders(): Record<string, string> {
-    const token = authStore.getToken()
-    return token ? { Authorization: `Bearer ${token}` } : {}
+  function strapiPublicGet<T>(path: string, params?: Record<string, unknown>): Promise<T> {
+    return $fetch<T>(`/api/strapi/${path}`, { params })
   }
 
-  async function strapiGet<T>(path: string, params?: Record<string, unknown>): Promise<T> {
+  function strapiAuthenticatedGet<T>(path: string, params?: Record<string, unknown>): Promise<T> {
+    const token = authStore.getToken()
     return $fetch<T>(`/api/strapi/${path}`, {
       params,
-      headers: authHeaders(),
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
+  }
+
+  function emptyResponse<T>(data: T): StrapiResponse<T> {
+    return { data, meta: {} }
+  }
+
+  async function safeStrapi<T>(
+    label: string,
+    getter: () => Promise<T>,
+    fallback: T,
+  ): Promise<T> {
+    try {
+      return await getter()
+    }
+    catch (error) {
+      const statusCode = (error as { statusCode?: number; status?: number })?.statusCode
+        ?? (error as { statusCode?: number; status?: number })?.status
+      console.warn(`[Strapi] ${label} failed${statusCode ? ` (${statusCode})` : ''}`)
+      return fallback
+    }
   }
 
   // ─── Products ───────────────────────────────────────────────────────────────
@@ -23,7 +43,9 @@ export function useStrapi() {
     query?: string
   }): Promise<StrapiResponse<Product[]>> {
     const query = opts?.query?.trim()
-    return strapiGet<StrapiResponse<Product[]>>('products', {
+    return safeStrapi(
+      'getProducts',
+      () => strapiPublicGet<StrapiResponse<Product[]>>('products', {
       'populate[mainImage]': true,
       'populate[categories][fields][0]': 'name',
       'populate[categories][fields][1]': 'slug',
@@ -40,11 +62,15 @@ export function useStrapi() {
       'pagination[pageSize]': opts?.pageSize ?? 24,
       'sort[0]': 'sortOrder:asc',
       'sort[1]': 'createdAt:desc',
-    })
+      }),
+      emptyResponse([]),
+    )
   }
 
   async function getFeaturedProducts(): Promise<StrapiResponse<Product[]>> {
-    return strapiGet<StrapiResponse<Product[]>>('products', {
+    return safeStrapi(
+      'getFeaturedProducts',
+      () => strapiPublicGet<StrapiResponse<Product[]>>('products', {
       'populate[mainImage]': true,
       'populate[categories][fields][0]': 'name',
       'populate[categories][fields][1]': 'slug',
@@ -53,11 +79,15 @@ export function useStrapi() {
       'filters[isActive][$eq]': true,
       'pagination[pageSize]': 8,
       'sort[0]': 'sortOrder:asc',
-    })
+      }),
+      emptyResponse([]),
+    )
   }
 
   async function getProductBySlug(slug: string): Promise<StrapiResponse<Product[]>> {
-    return strapiGet<StrapiResponse<Product[]>>('products', {
+    return safeStrapi(
+      'getProductBySlug',
+      () => strapiPublicGet<StrapiResponse<Product[]>>('products', {
       'populate[mainImage]': true,
       'populate[gallery]': true,
       'populate[categories][fields][0]': 'name',
@@ -69,7 +99,9 @@ export function useStrapi() {
       'populate[ingredients]': true,
       'filters[slug][$eq]': slug,
       'filters[isActive][$eq]': true,
-    })
+      }),
+      emptyResponse([]),
+    )
   }
 
   async function getProductsByCategory(
@@ -77,7 +109,9 @@ export function useStrapi() {
     opts?: { page?: number, pageSize?: number, query?: string },
   ): Promise<StrapiResponse<Product[]>> {
     const query = opts?.query?.trim()
-    return strapiGet<StrapiResponse<Product[]>>('products', {
+    return safeStrapi(
+      'getProductsByCategory',
+      () => strapiPublicGet<StrapiResponse<Product[]>>('products', {
       'populate[mainImage]': true,
       'populate[categories][fields][0]': 'name',
       'populate[categories][fields][1]': 'slug',
@@ -92,43 +126,58 @@ export function useStrapi() {
       'pagination[page]': opts?.page ?? 1,
       'pagination[pageSize]': opts?.pageSize ?? 24,
       'sort[0]': 'sortOrder:asc',
-    })
+      }),
+      emptyResponse([]),
+    )
   }
 
   // ─── Categories ─────────────────────────────────────────────────────────────
 
   async function getCategories(): Promise<StrapiResponse<Category[]>> {
-    return strapiGet<StrapiResponse<Category[]>>('categories', {
+    return safeStrapi(
+      'getCategories',
+      () => strapiPublicGet<StrapiResponse<Category[]>>('categories', {
       'populate[image]': true,
       'populate[children][fields][0]': 'name',
       'populate[children][fields][1]': 'slug',
       'filters[isActive][$eq]': true,
       'filters[parent][id][$null]': true,
       'sort[0]': 'sortOrder:asc',
-    })
+      }),
+      emptyResponse([]),
+    )
   }
 
   async function getCategoryBySlug(slug: string): Promise<StrapiResponse<Category[]>> {
-    return strapiGet<StrapiResponse<Category[]>>('categories', {
+    return safeStrapi(
+      'getCategoryBySlug',
+      () => strapiPublicGet<StrapiResponse<Category[]>>('categories', {
       'populate[image]': true,
       'populate[children][fields][0]': 'name',
       'populate[children][fields][1]': 'slug',
       'filters[slug][$eq]': slug,
-    })
+      }),
+      emptyResponse([]),
+    )
   }
 
   // ─── Brands ─────────────────────────────────────────────────────────────────
 
   async function getBrands(): Promise<StrapiResponse<Brand[]>> {
-    return strapiGet<StrapiResponse<Brand[]>>('brands', {
+    return safeStrapi(
+      'getBrands',
+      () => strapiPublicGet<StrapiResponse<Brand[]>>('brands', {
       'populate[logo]': true,
       'filters[isActive][$eq]': true,
       'sort[0]': 'sortOrder:asc',
-    })
+      }),
+      emptyResponse([]),
+    )
   }
 
   return {
-    strapiGet,
+    strapiPublicGet,
+    strapiAuthenticatedGet,
     getProducts,
     getFeaturedProducts,
     getProductBySlug,
