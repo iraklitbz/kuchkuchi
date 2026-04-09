@@ -20,7 +20,9 @@ export function useStrapi() {
   async function getProducts(opts?: {
     page?: number
     pageSize?: number
+    query?: string
   }): Promise<StrapiResponse<Product[]>> {
+    const query = opts?.query?.trim()
     return strapiGet<StrapiResponse<Product[]>>('products', {
       'populate[mainImage]': true,
       'populate[categories][fields][0]': 'name',
@@ -28,6 +30,12 @@ export function useStrapi() {
       'populate[brand][fields][0]': 'name',
       'populate[brand][fields][1]': 'slug',
       'filters[isActive][$eq]': true,
+      ...(query ? {
+        'filters[$or][0][title][$containsi]': query,
+        'filters[$or][1][sku][$containsi]': query,
+        'filters[$or][2][brand][name][$containsi]': query,
+        'filters[$or][3][categories][name][$containsi]': query,
+      } : {}),
       'pagination[page]': opts?.page ?? 1,
       'pagination[pageSize]': opts?.pageSize ?? 24,
       'sort[0]': 'sortOrder:asc',
@@ -66,14 +74,21 @@ export function useStrapi() {
 
   async function getProductsByCategory(
     categorySlug: string,
-    opts?: { page?: number, pageSize?: number },
+    opts?: { page?: number, pageSize?: number, query?: string },
   ): Promise<StrapiResponse<Product[]>> {
+    const query = opts?.query?.trim()
     return strapiGet<StrapiResponse<Product[]>>('products', {
       'populate[mainImage]': true,
       'populate[categories][fields][0]': 'name',
       'populate[categories][fields][1]': 'slug',
       'filters[categories][slug][$eq]': categorySlug,
       'filters[isActive][$eq]': true,
+      ...(query ? {
+        'filters[$or][0][title][$containsi]': query,
+        'filters[$or][1][sku][$containsi]': query,
+        'filters[$or][2][brand][name][$containsi]': query,
+        'filters[$or][3][categories][name][$containsi]': query,
+      } : {}),
       'pagination[page]': opts?.page ?? 1,
       'pagination[pageSize]': opts?.pageSize ?? 24,
       'sort[0]': 'sortOrder:asc',
