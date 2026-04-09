@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx nuxi:*)",
+      "Bash(find /Users/iraklitbz/Desktop/apps/webs/kuchkucha/node_modules/nuxt-svgo -name \"*.d.ts\" -exec grep -l \"svg\\\\|Component\\\\|module\" {} \\\\;)",
+      "Bash(curl:*)",
+      "Bash(python3 -m json.tool)",
+      "Bash(cat /Users/iraklitbz/Desktop/apps/webs/kuchkuchaCMS/src/api/product/routes/*.ts)",
+      "Bash(kill 596)",
+      "Bash(mkdir -p /Users/iraklitbz/Desktop/apps/webs/kuchkuchaCMS/src/api/order/content-types/order)",
+      "Bash(mkdir -p /Users/iraklitbz/Desktop/apps/webs/kuchkuchaCMS/src/api/order/controllers)",
+      "Bash(mkdir -p /Users/iraklitbz/Desktop/apps/webs/kuchkuchaCMS/src/api/order/routes)",
+      "Bash(mkdir -p /Users/iraklitbz/Desktop/apps/webs/kuchkuchaCMS/src/api/order/services)",
+      "Bash(npm run:*)",
+      "Bash(./node_modules/.bin/nuxi typecheck:*)",
+      "Bash(./node_modules/.bin/vue-tsc --noEmit)",
+      "Bash(xargs cat:*)"
+    ]
+  }
+}
