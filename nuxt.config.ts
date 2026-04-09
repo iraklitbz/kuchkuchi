@@ -41,7 +41,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
+      htmlAttrs: { lang: 'ka' },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -49,7 +49,8 @@ export default defineNuxtConfig({
         { name: 'robots', content: 'index, follow' },
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/jpeg', href: 'https://res.cloudinary.com/dketlufwl/image/upload/c_fill,w_32,h_32,r_max/v1775286358/kutch_kutchi_logo_60cm_b96b40d732.jpg' },
+        { rel: 'apple-touch-icon', href: 'https://res.cloudinary.com/dketlufwl/image/upload/c_fill,w_180,h_180,r_max/v1775286358/kutch_kutchi_logo_60cm_b96b40d732.jpg' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' as const },
         {
